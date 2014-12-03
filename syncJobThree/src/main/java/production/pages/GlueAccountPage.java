@@ -56,9 +56,9 @@ public void CCIMailIntegration(String num) {
     	
     	CCICustomerMail().click();
     	System.out.print("                    " + num);
-    		waitFor(3).seconds();
+    		waitFor(4).seconds();
     	getDriver().switchTo().alert().accept(); 
-			waitFor(12).seconds();
+			waitFor(16).seconds();
 		System.out.println("   :  " +getDriver().switchTo().alert().getText());
 		getDriver().switchTo().alert().accept();
 			waitFor(5).seconds();
@@ -83,9 +83,10 @@ public void CCIMailIntegration(String num) {
 					Thucydides.takeScreenshot();
 					CCIMailIntegration(rowNum);
 				} catch (Exception e) {
-					System.out.println("                       	 " + rowNum +"   : ---> SORRY, Please try again (Latency Issue)");
+					System.out.println("                       " + rowNum +"   : ---> SORRY, Please try again (Latency Issue)");
 				}
 			}
 		}
+		System.out.println("\n");
 	}
 }
