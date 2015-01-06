@@ -23,10 +23,13 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 @DefaultUrl("http://test.salesforce.com")
 
+//@DefaultUrl("https://eu1.salesforce.com")
+
 public class DailyMailAccountPage extends PageObject {
 	
 	long timeNow = System.currentTimeMillis();
 	String url = "https://cs14.salesforce.com/";
+//	String url = "https://eu1.salesforce.com/";
 	String order,rowNum;
 	String billingType = "Agency";
 	static String rcs;
@@ -96,7 +99,7 @@ public class DailyMailAccountPage extends PageObject {
     public void clickOnLogin(){
     	waitABit(1000);
     	loginbutton().click();
-    	waitFor(5).seconds();
+    	waitFor(8).seconds();
     }
     public void readfile(String fileloc) throws IOException{
     	
@@ -117,10 +120,10 @@ public class DailyMailAccountPage extends PageObject {
 							String clientURL = url.concat(clinetuniqueID);
 							/*System.out.println("client URL is -------- :  "+clientURL);*/
 							getDriver().get(clientURL);
-								waitFor(6).seconds();
+								waitFor(9).seconds();
 							Thucydides.takeScreenshot();
 							createDirectOrder().click();
-								waitFor(4).seconds();
+								waitFor(6).seconds();
 								if (str.equalsIgnoreCase("Brand"))
 								{
 										String selectionType = record.get("billingSelection");
@@ -128,7 +131,7 @@ public class DailyMailAccountPage extends PageObject {
 										{
 											billingOption().selectByVisibleText(billingType);
 											clickNext().click();
-											waitFor(1).second();
+											waitFor(2).second();
 											try {
 													parentBookingSel().selectByVisibleText(record.get("bookingAgency"));
 													waitFor(1).seconds();
@@ -157,11 +160,11 @@ public class DailyMailAccountPage extends PageObject {
 											try{
 												selectAgencyType().selectByVisibleText(record.get("agencyType"));
 												clickNext().click();
+												waitFor(3).seconds();
 										}   catch (Exception exp){}
-												waitFor(2).seconds();
 											bookingSelection().selectByVisibleText(record.get("bookingAgency"));
 											clickNext().click();
-												waitFor(2).seconds();
+												waitFor(3).seconds();
 											selectBillingAgency().selectByVisibleText(record.get("billingAgency"));
 												waitFor(1).second();
 											clickNext().click();
@@ -227,7 +230,7 @@ public class DailyMailAccountPage extends PageObject {
 								waitFor(1).seconds();
 							finish().click();
 		/************** Launch OrderPlugin and Create Order*************************************************/	
-							 	 waitFor(13).seconds();
+							 	 waitFor(14).seconds();
 					     	 	 String sourceURL =getDriver().findElement(By.xpath("//*[@id='j_id0:j_id8']/div[2]/iframe")).getAttribute("src");
 					     	 	 String[] firstsplit = sourceURL.split("authorizationcode=");
 					     	 	 String[] secondpartsplit = firstsplit[1].split("\\&clientid=");
@@ -235,9 +238,9 @@ public class DailyMailAccountPage extends PageObject {
 								 String add = "&clientid=";
 								 acode =record.get("authCode");
 								 String date = record.get("addDate");
-								 /*String sampleURL = "https://pre-prod.cci-webaccess-dmgmedia.co.uk/salesforce/plugin/orders/create?userid=srinivasa.kuncha&group=Mail Display Sales&profile=MD Manager&accountid=";*/ 
+								 /*String sampleURL = "https://pre-prod.cci-webaccess-dmgmedia.co.uk/salesforce/plugin/orders/create?userid=srinivasa.kuncha&group=Mail Display Sales&profile=MD Manager&accountid=";*/
+//								 String redirect = "&bookings=[{\"packagename\":\"TMOS Display\",\"dates\":[\""+ date + "\"]}]";
 								 String redirect = "&bookings=[{\"packagename\":\"DM Display\",\"dates\":[\""+ date + "\"]}]";
-//								 String redirect = "&bookings=[{\"packagename\":\"MailPlus\",\"dates\":[\""+ date + "\"]}]";
 								 String OrderURL=firstsplit[0].concat(acode).concat(add).concat(secondpartsplit[1]).concat(redirect);
 								 getDriver().get(OrderURL);
 								 waitFor(12).seconds();
@@ -336,7 +339,7 @@ public class DailyMailAccountPage extends PageObject {
 					    	 Thucydides.takeScreenshot();
 		/************************************ Supply Price Details ******************************************/
 					    	 selectPrice().click();
-					    	 		waitFor(2).seconds();
+					    	 		waitFor(3).seconds();
 					    	 selectRevenue().sendKeys(record.get("revenue"));
 					    	 		waitFor(2).seconds();
 					    	 updateRevenue().click(); 
