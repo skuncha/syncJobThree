@@ -52,13 +52,16 @@ public class DailyMailAccountPage extends PageObject {
 	private WebElementFacade selectBillingAgency() 	{ return element(By.id("j_id0:j_id1:i:f:pb:d:BillingAgencies.input"));							}
 	private WebElementFacade contactSelection()     { return element(By.xpath("//*[@id='j_id0:j_id1:i:f:pb:d:Contact.input']")); 					}
 	private WebElementFacade searchContact()     	{ 	return element(By.id("j_id0:j_id1:i:f:pb:d:Prompt_Contact_Name.input")); 					}
-	private WebElementFacade selectAnyContact()     { return element(By.xpath("//*[@id='j_id0:j_id1:i:f:pb:d:Contact.input']/option[2]")); 			}
+//	private WebElementFacade selectAnyContact()     { return element(By.xpath("//*[@id='j_id0:j_id1:i:f:pb:d:Contact.input']/option[2]")); 			}
 	private WebElementFacade finish() 				{ return element(By.id("j_id0:j_id1:i:f:pb:pbb:bottom:finish"));								}
 	private WebElementFacade orderStatus()   		{ return element(By.id("Order.Identification:order.statusCode"));								}
 	private WebElementFacade orderPurchaseNo()   	{ return element(By.id("Order.Identification:order.purchaseOrderNo"));							}
     private WebElementFacade orderNote()         	{ return element(By.id("Order.Identification:order.note"));					   					}
     private WebElementFacade orderUrgentNote()   	{ return element(By.id("Order.Identification:order.message"));									}
     private WebElementFacade orderSalesRepId()   	{ return element(By.id("Order.SalesTerritory:order.primarySalesRep.id"));						}
+    private WebElementFacade orderSalesTerritory()  { return element(By.xpath("//*[@id='MaterialAccordion']/div/div[2]/div/div[2]/div/fieldset/div[2]/div/div/span/button/i"));	}
+    private WebElementFacade orderSTInput()			{ return element(By.xpath("//*[@id='salesforce-plugin']/div[2]/div/div/form/div[2]/div/table/thead/tr[2]/th[1]/input")); 	}
+    private WebElementFacade orderSTselect()			{ return element(By.xpath("//*[@id='salesforce-plugin']/div[2]/div/div/form/div[2]/div/table/tbody/tr/td[1]/span")); 	}
     private WebElementFacade addPackage()   	 	{ return element(By.xpath("//h4/a/span/input"));												}
     private WebElementFacade title() 			 	{ return element(By.id("Order.Schedule:sched.titleCode"));										}
     private WebElementFacade selectPublication() 	{ return element(By.id("Order.Schedule:sched.publicationCode"));								}
@@ -69,7 +72,7 @@ public class DailyMailAccountPage extends PageObject {
     private WebElementFacade selectZone()   	 	{ return element(By.id("Order.Schedule:"));														}
     private WebElementFacade distribution()   	 	{ return element(By.id("rder.Schedule:sched.distributionCode"));								}
     private WebElementFacade noOfInserts()   	 	{ return element(By.id("Order.Schedule:sched.noOfInserts"));									}
-    private WebElementFacade saveOrder()   	     	{ return element(By.xpath("//nav[button='Save']/button[2]"));									}
+//    private WebElementFacade saveOrder()   	     	{ return element(By.xpath("//nav[button='Save']/button[2]"));									}
     private WebElementFacade selectModule()   	 	{ return element(By.id("Order.Schedule.Material:material.moduleCode"));							}
     private WebElementFacade productionNote()   	{ return element(By.id("Order.Schedule.Material:material.productionNote"));						}
     private WebElementFacade ABCopySplit()			{ return element(By.id(":propval.propertyBoolValue"));											}
@@ -83,7 +86,7 @@ public class DailyMailAccountPage extends PageObject {
     private WebElementFacade updateRevenue()   	 	{ return element(By.xpath("//fieldset/div/div[2]/div/div/span/button"));						}
     private WebElementFacade acceptOrder()   	 	{ return element(By.xpath("//nav[button='Accept']/button[3]"));									} 
     private WebElementFacade orderID()      	 	{ return element(By.xpath(".//*[@id='SchedulingAccordion']/div/div[1]/div[2]/div/div[2]/fieldset/div[1]/div/p")); }
-    
+  
     public void supplyLogin_Credientials(String username, String password) {
     		waitFor(3).seconds();
     	getDriver().manage().window().maximize();
@@ -93,6 +96,7 @@ public class DailyMailAccountPage extends PageObject {
     public void clickOnLogin(){
     	waitABit(1000);
     	loginbutton().click();
+    	waitFor(5).seconds();
     }
     public void readfile(String fileloc) throws IOException{
     	
@@ -223,7 +227,7 @@ public class DailyMailAccountPage extends PageObject {
 								waitFor(1).seconds();
 							finish().click();
 		/************** Launch OrderPlugin and Create Order*************************************************/	
-							 	 waitFor(10).seconds();
+							 	 waitFor(13).seconds();
 					     	 	 String sourceURL =getDriver().findElement(By.xpath("//*[@id='j_id0:j_id8']/div[2]/iframe")).getAttribute("src");
 					     	 	 String[] firstsplit = sourceURL.split("authorizationcode=");
 					     	 	 String[] secondpartsplit = firstsplit[1].split("\\&clientid=");
@@ -236,7 +240,7 @@ public class DailyMailAccountPage extends PageObject {
 //								 String redirect = "&bookings=[{\"packagename\":\"MailPlus\",\"dates\":[\""+ date + "\"]}]";
 								 String OrderURL=firstsplit[0].concat(acode).concat(add).concat(secondpartsplit[1]).concat(redirect);
 								 getDriver().get(OrderURL);
-								 waitFor(10).seconds();
+								 waitFor(12).seconds();
 		/************************************ Supply Order Details ******************************************/
 					    	 orderPurchaseNo().sendKeys(record.get("PONumber"));
 					    	 orderNote().sendKeys(record.get("orderNote"));
@@ -247,7 +251,12 @@ public class DailyMailAccountPage extends PageObject {
 					    	 	{
 					    	 		orderSalesRepId().selectByVisibleText(record.get("salesPerson"));
 					    	 		waitFor(1).second();
-					    	 	}	
+					    	 	}
+					    	 	orderSalesTerritory().click();
+					    		waitFor(2).seconds();
+					    		orderSTInput().type(record.get("salesTerritory"));
+					    		waitFor(1).seconds();
+					    		orderSTselect().click();
 					    	 order = orderID().getText();
 					    	 		waitFor(1).second();
 					    	 Thucydides.takeScreenshot();
@@ -353,8 +362,7 @@ public class DailyMailAccountPage extends PageObject {
 	  /*************************************************************************************************/
 					} catch (Exception e)
 						{
-//									e.getCause();
-									System.out.println("       " +rowNum + " ---> " + "Sorry DATA or Latency issue please check report" );
+									System.out.println("       " +rowNum + " ---> " + "Sorry! either DATA/Latency issue please check test report for details" );
 									Thucydides.takeScreenshot();
 						}
 						try {
