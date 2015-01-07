@@ -28,7 +28,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class DailyMailAccountPage extends PageObject {
 	
 	long timeNow = System.currentTimeMillis();
-	String url = "https://cs14.salesforce.com/";
+	String url = "https://dmgsalescloud--prodmirror.cs7.my.salesforce.com/";
 //	String url = "https://eu1.salesforce.com/";
 	String order,rowNum;
 	String billingType = "Agency";
@@ -65,7 +65,7 @@ public class DailyMailAccountPage extends PageObject {
     private WebElementFacade orderSalesTerritory()  { return element(By.xpath("//*[@id='MaterialAccordion']/div/div[2]/div/div[2]/div/fieldset/div[2]/div/div/span/button/i"));	}
     private WebElementFacade orderSTInput()			{ return element(By.xpath("//*[@id='salesforce-plugin']/div[2]/div/div/form/div[2]/div/table/thead/tr[2]/th[1]/input")); 	}
     private WebElementFacade orderSTselect()			{ return element(By.xpath("//*[@id='salesforce-plugin']/div[2]/div/div/form/div[2]/div/table/tbody/tr/td[1]/span")); 	}
-    private WebElementFacade addPackage()   	 	{ return element(By.xpath("//h4/a/span/input"));												}
+    private WebElementFacade addPackage()   	 	{ return element(By.xpath("//h4/a/span[1]/input"));												}
     private WebElementFacade title() 			 	{ return element(By.id("Order.Schedule:sched.titleCode"));										}
     private WebElementFacade selectPublication() 	{ return element(By.id("Order.Schedule:sched.publicationCode"));								}
     private WebElementFacade webSiteCategory()   	{ return element(By.id("Order.Schedule:sched.webSiteCategoryCode"));							}
@@ -120,10 +120,17 @@ public class DailyMailAccountPage extends PageObject {
 							String clientURL = url.concat(clinetuniqueID);
 							/*System.out.println("client URL is -------- :  "+clientURL);*/
 							getDriver().get(clientURL);
-								waitFor(9).seconds();
+							waitFor(1).seconds();
+							try {
+						    	 WebDriverWait wait1 = new WebDriverWait(getDriver(), 3);
+						    	 if(wait1.until(ExpectedConditions.alertIsPresent())!=null)
+						    	      getDriver().switchTo().alert().accept();
+						    	 }
+						    	 catch (Exception x) {}
+								waitFor(8).seconds();
 							Thucydides.takeScreenshot();
 							createDirectOrder().click();
-								waitFor(6).seconds();
+								waitFor(5).seconds();
 								if (str.equalsIgnoreCase("Brand"))
 								{
 										String selectionType = record.get("billingSelection");
@@ -230,7 +237,7 @@ public class DailyMailAccountPage extends PageObject {
 								waitFor(1).seconds();
 							finish().click();
 		/************** Launch OrderPlugin and Create Order*************************************************/	
-							 	 waitFor(14).seconds();
+							 	 waitFor(12).seconds();
 					     	 	 String sourceURL =getDriver().findElement(By.xpath("//*[@id='j_id0:j_id8']/div[2]/iframe")).getAttribute("src");
 					     	 	 String[] firstsplit = sourceURL.split("authorizationcode=");
 					     	 	 String[] secondpartsplit = firstsplit[1].split("\\&clientid=");
@@ -339,11 +346,11 @@ public class DailyMailAccountPage extends PageObject {
 					    	 Thucydides.takeScreenshot();
 		/************************************ Supply Price Details ******************************************/
 					    	 selectPrice().click();
-					    	 		waitFor(3).seconds();
+					    	 		waitFor(4).seconds();
 					    	 selectRevenue().sendKeys(record.get("revenue"));
 					    	 		waitFor(2).seconds();
 					    	 updateRevenue().click(); 
-					    	 		waitFor(5).seconds();
+					    	 		waitFor(4).seconds();
 					    	 Thucydides.takeScreenshot();	
 		/************************************ Accept Order *************************************************/	
 					    	 System.out.println("       " +rowNum + " . " + " Order ID : " +order );	
@@ -355,7 +362,7 @@ public class DailyMailAccountPage extends PageObject {
 								    	 WebElement prepaymentwindow1 = getDriver().switchTo().activeElement();
 								    	 		waitFor(1).second();
 								    	 prepaymentwindow1.findElement(By.xpath("//input[@value='Prepay']")).click();
-								    	 		waitFor(3).seconds();
+								    	 		waitFor(2).seconds();
 								    	 WebElement prepaymentwindow2 = getDriver().switchTo().activeElement();
 								    	 		waitFor(1).second(); 
 								    	 prepaymentwindow2.findElement(By.xpath("//input[@value='OK']")).click();
