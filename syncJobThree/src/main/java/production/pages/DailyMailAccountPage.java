@@ -136,8 +136,10 @@ public class DailyMailAccountPage extends PageObject {
 										String selectionType = record.get("billingSelection");
 										if (selectionType.equalsIgnoreCase("Agency"))
 										{
-											billingOption().selectByVisibleText(billingType);
-											clickNext().click();
+											try{
+												billingOption().selectByVisibleText(billingType);
+												clickNext().click();
+												} catch (Exception excep) {clickNext().click();}
 											waitFor(2).second();
 											try {
 													parentBookingSel().selectByVisibleText(record.get("bookingAgency"));
@@ -168,7 +170,7 @@ public class DailyMailAccountPage extends PageObject {
 												selectAgencyType().selectByVisibleText(record.get("agencyType"));
 												clickNext().click();
 												waitFor(3).seconds();
-										}   catch (Exception exp){}
+										}   catch (Exception exp){clickNext().click();}
 											bookingSelection().selectByVisibleText(record.get("bookingAgency"));
 											clickNext().click();
 												waitFor(3).seconds();
@@ -267,6 +269,7 @@ public class DailyMailAccountPage extends PageObject {
 					    		orderSTInput().type(record.get("salesTerritory"));
 					    		waitFor(1).seconds();
 					    		orderSTselect().click();
+					    		waitFor(1).seconds();
 					    	 order = orderID().getText();
 					    	 		waitFor(1).second();
 					    	 Thucydides.takeScreenshot();
