@@ -29,7 +29,9 @@ public class DailyMailAccountPage extends PageObject {
 	
 	long timeNow = System.currentTimeMillis();
 	String url = "https://dmgsalescloud--prodmirror.cs7.my.salesforce.com/";
-//	String url = "https://eu1.salesforce.com/";
+		
+//	https://cs14.salesforce.com/
+	
 	String order,rowNum;
 	String billingType = "Agency";
 	static String rcs;
@@ -50,12 +52,11 @@ public class DailyMailAccountPage extends PageObject {
 	private WebElementFacade parentBookingSel() 	{ return element(By.id("j_id0:j_id1:i:f:pb:d:ParentBooking_Agency.input"));						}
 	private WebElementFacade billingSelection() 	{ return element(By.id("j_id0:j_id1:i:f:pb:d:Billing_Selection.input"));						}
 	private WebElementFacade billingOption() 		{ return element(By.id("j_id0:j_id1:i:f:pb:d:Billing_Options.input"));							}
-//	j_id0:j_id1:i:f:pb:d:Billing_Options_0.input
-//	j_id0:j_id1:i:f:pb:d:Billing_Options.input
+	private WebElementFacade billingOption1() 		{ return element(By.id("j_id0:j_id1:i:f:pb:d:Billing_Options_0.input"));						}
 	private WebElementFacade selectBillingAgency() 	{ return element(By.id("j_id0:j_id1:i:f:pb:d:BillingAgencies.input"));							}
 	private WebElementFacade contactSelection()     { return element(By.xpath("//*[@id='j_id0:j_id1:i:f:pb:d:Contact.input']")); 					}
 	private WebElementFacade searchContact()     	{ 	return element(By.id("j_id0:j_id1:i:f:pb:d:Prompt_Contact_Name.input")); 					}
-//	private WebElementFacade selectAnyContact()     { return element(By.xpath("//*[@id='j_id0:j_id1:i:f:pb:d:Contact.input']/option[2]")); 			}
+	private WebElementFacade selectAnyContact()     { return element(By.xpath("//*[@id='j_id0:j_id1:i:f:pb:d:Contact.input']/option[2]")); 			}
 	private WebElementFacade finish() 				{ return element(By.id("j_id0:j_id1:i:f:pb:pbb:bottom:finish"));								}
 	private WebElementFacade orderStatus()   		{ return element(By.id("Order.Identification:order.statusCode"));								}
 	private WebElementFacade orderPurchaseNo()   	{ return element(By.id("Order.Identification:order.purchaseOrderNo"));							}
@@ -65,6 +66,7 @@ public class DailyMailAccountPage extends PageObject {
     private WebElementFacade orderSalesTerritory()  { return element(By.xpath("//*[@id='MaterialAccordion']/div/div[2]/div/div[2]/div/fieldset/div[2]/div/div/span/button/i"));	}
     private WebElementFacade orderSTInput()			{ return element(By.xpath("//*[@id='salesforce-plugin']/div[2]/div/div/form/div[2]/div/table/thead/tr[2]/th[1]/input")); 	}
     private WebElementFacade orderSTselect()			{ return element(By.xpath("//*[@id='salesforce-plugin']/div[2]/div/div/form/div[2]/div/table/tbody/tr/td[1]/span")); 	}
+//    private WebElementFacade addPackage()   	 	{ return element(By.xpath("//h4/a/span/input"));												}
     private WebElementFacade addPackage()   	 	{ return element(By.xpath("//h4/a/span[1]/input"));												}
     private WebElementFacade title() 			 	{ return element(By.id("Order.Schedule:sched.titleCode"));										}
     private WebElementFacade selectPublication() 	{ return element(By.id("Order.Schedule:sched.publicationCode"));								}
@@ -75,7 +77,7 @@ public class DailyMailAccountPage extends PageObject {
     private WebElementFacade selectZone()   	 	{ return element(By.id("Order.Schedule:"));														}
     private WebElementFacade distribution()   	 	{ return element(By.id("rder.Schedule:sched.distributionCode"));								}
     private WebElementFacade noOfInserts()   	 	{ return element(By.id("Order.Schedule:sched.noOfInserts"));									}
-//    private WebElementFacade saveOrder()   	     	{ return element(By.xpath("//nav[button='Save']/button[2]"));									}
+    private WebElementFacade saveOrder()   	     	{ return element(By.xpath("//nav[button='Save']/button[2]"));									}
     private WebElementFacade selectModule()   	 	{ return element(By.id("Order.Schedule.Material:material.moduleCode"));							}
     private WebElementFacade productionNote()   	{ return element(By.id("Order.Schedule.Material:material.productionNote"));						}
     private WebElementFacade ABCopySplit()			{ return element(By.id(":propval.propertyBoolValue"));											}
@@ -89,7 +91,9 @@ public class DailyMailAccountPage extends PageObject {
     private WebElementFacade updateRevenue()   	 	{ return element(By.xpath("//fieldset/div/div[2]/div/div/span/button"));						}
     private WebElementFacade acceptOrder()   	 	{ return element(By.xpath("//nav[button='Accept']/button[3]"));									} 
     private WebElementFacade orderID()      	 	{ return element(By.xpath(".//*[@id='SchedulingAccordion']/div/div[1]/div[2]/div/div[2]/fieldset/div[1]/div/p")); }
-  
+    private WebElementFacade selectHeight()     	{ return element(By.xpath("//*[@id='Order.Schedule.Material:material.bookedHeight']"));			}
+    private WebElementFacade selectWidth()     		{ return element(By.xpath("//*[@id='Order.Schedule.Material:material.bookedWidth']"));			}
+   
     public void supplyLogin_Credientials(String username, String password) {
     		waitFor(3).seconds();
     	getDriver().manage().window().maximize();
@@ -99,7 +103,7 @@ public class DailyMailAccountPage extends PageObject {
     public void clickOnLogin(){
     	waitABit(1000);
     	loginbutton().click();
-    	waitFor(8).seconds();
+    	waitFor(15).seconds();
     }
     public void readfile(String fileloc) throws IOException{
     	
@@ -134,13 +138,27 @@ public class DailyMailAccountPage extends PageObject {
 								if (str.equalsIgnoreCase("Brand"))
 								{
 										String selectionType = record.get("billingSelection");
+										if (selectionType.equalsIgnoreCase("Parent"))
+										{
+											billingOption1().selectByVisibleText("Parent");
+											clickNext().click();
+											waitFor(1).second();
+										}
 										if (selectionType.equalsIgnoreCase("Agency"))
 										{
 											try{
-												billingOption().selectByVisibleText(billingType);
+											billingOption().selectByVisibleText(billingType);
+											clickNext().click();
+											}
+											catch (Exception exp)
+											{
+												try{
+													billingOption1().selectByVisibleText(billingType);
+												}catch (Exception exp1){}
+												
 												clickNext().click();
-												} catch (Exception excep) {clickNext().click();}
-											waitFor(2).second();
+											}
+											waitFor(1).second();
 											try {
 													parentBookingSel().selectByVisibleText(record.get("bookingAgency"));
 													waitFor(1).seconds();
@@ -154,11 +172,12 @@ public class DailyMailAccountPage extends PageObject {
 											selectBillingAgency().selectByVisibleText(record.get("billingAgency"));
 											clickNext().click();
 										}
-										else
+										
+										if (selectionType.equalsIgnoreCase("Direct"))
 										{
-											billingOption().selectByVisibleText("Direct");
-												waitFor(1).second();
+											billingOption().selectByVisibleText(billingType);
 											clickNext().click();
+											waitFor(1).second();
 										}
 								}
 								if (str.equalsIgnoreCase("Client") || str.equalsIgnoreCase("DMGT Group"))
@@ -169,8 +188,8 @@ public class DailyMailAccountPage extends PageObject {
 											try{
 												selectAgencyType().selectByVisibleText(record.get("agencyType"));
 												clickNext().click();
-												waitFor(3).seconds();
 										}   catch (Exception exp){clickNext().click();}
+												waitFor(3).seconds();
 											bookingSelection().selectByVisibleText(record.get("bookingAgency"));
 											clickNext().click();
 												waitFor(3).seconds();
@@ -247,12 +266,12 @@ public class DailyMailAccountPage extends PageObject {
 								 String add = "&clientid=";
 								 acode =record.get("authCode");
 								 String date = record.get("addDate");
-								 /*String sampleURL = "https://pre-prod.cci-webaccess-dmgmedia.co.uk/salesforce/plugin/orders/create?userid=srinivasa.kuncha&group=Mail Display Sales&profile=MD Manager&accountid=";*/
-//								 String redirect = "&bookings=[{\"packagename\":\"TMOS Display\",\"dates\":[\""+ date + "\"]}]";
+								 /*String sampleURL = "https://pre-prod.cci-webaccess-dmgmedia.co.uk/salesforce/plugin/orders/create?userid=srinivasa.kuncha&group=Mail Display Sales&profile=MD Manager&accountid=";*/ 
 								 String redirect = "&bookings=[{\"packagename\":\"DM Display\",\"dates\":[\""+ date + "\"]}]";
+//								 String redirect = "&bookings=[{\"packagename\":\"MailPlus\",\"dates\":[\""+ date + "\"]}]";
 								 String OrderURL=firstsplit[0].concat(acode).concat(add).concat(secondpartsplit[1]).concat(redirect);
 								 getDriver().get(OrderURL);
-								 waitFor(12).seconds();
+								 waitFor(11).seconds();
 		/************************************ Supply Order Details ******************************************/
 					    	 orderPurchaseNo().sendKeys(record.get("PONumber"));
 					    	 orderNote().sendKeys(record.get("orderNote"));
@@ -286,16 +305,30 @@ public class DailyMailAccountPage extends PageObject {
 						    	 	waitFor(4).seconds();
 						     selectSubSection().selectByVisibleText(record.get("subsection"));
 						    		waitFor(4).seconds();
-						     productionNote().sendKeys(record.get("productionNote"));
-								 	waitFor(1).seconds();
 							 String colour = record.get("colour");	 	
 									 if (colour.equals("M"))
 									 {
 										 color().click();
 										 waitFor(3).seconds();
 									 }
+							String salesmodule = record.get("module");
+							
+							if (!"".equals(salesmodule))
+				    	 	{
 						     selectModule().selectByVisibleText(record.get("module"));
-							    	waitFor(3).seconds();
+							    	waitFor(4).seconds();
+				    	 	}
+							else
+							{
+								selectHeight().sendKeys(record.get("height"));
+								waitFor(4).seconds();
+								selectWidth().clear();
+								waitFor(2).seconds();
+								selectWidth().typeAndEnter(record.get("width"));
+								waitFor(4).seconds();
+							}
+							productionNote().sendKeys(record.get("productionNote"));
+						 	waitFor(1).seconds();
 							 String zoneType = record.get("zones");
 							 		    rcs = record.get("regionalCopySplit");
 							 		   /*rcs = rcs.replace('/', '\\');
@@ -349,11 +382,11 @@ public class DailyMailAccountPage extends PageObject {
 					    	 Thucydides.takeScreenshot();
 		/************************************ Supply Price Details ******************************************/
 					    	 selectPrice().click();
-					    	 		waitFor(4).seconds();
+					    	 		waitFor(2).seconds();
 					    	 selectRevenue().sendKeys(record.get("revenue"));
 					    	 		waitFor(2).seconds();
 					    	 updateRevenue().click(); 
-					    	 		waitFor(4).seconds();
+					    	 		waitFor(5).seconds();
 					    	 Thucydides.takeScreenshot();	
 		/************************************ Accept Order *************************************************/	
 					    	 System.out.println("       " +rowNum + " . " + " Order ID : " +order );	
@@ -365,7 +398,7 @@ public class DailyMailAccountPage extends PageObject {
 								    	 WebElement prepaymentwindow1 = getDriver().switchTo().activeElement();
 								    	 		waitFor(1).second();
 								    	 prepaymentwindow1.findElement(By.xpath("//input[@value='Prepay']")).click();
-								    	 		waitFor(2).seconds();
+								    	 		waitFor(3).seconds();
 								    	 WebElement prepaymentwindow2 = getDriver().switchTo().activeElement();
 								    	 		waitFor(1).second(); 
 								    	 prepaymentwindow2.findElement(By.xpath("//input[@value='OK']")).click();
