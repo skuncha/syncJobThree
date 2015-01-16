@@ -103,7 +103,7 @@ public class DailyMailAccountPage extends PageObject {
     public void clickOnLogin(){
     	waitABit(1000);
     	loginbutton().click();
-    	waitFor(15).seconds();
+    	waitFor(20).seconds();
     }
     public void readfile(String fileloc) throws IOException{
     	
@@ -304,7 +304,7 @@ public class DailyMailAccountPage extends PageObject {
 						     selectZone().selectByVisibleText(record.get("zones"));
 						    	 	waitFor(4).seconds();
 						     selectSubSection().selectByVisibleText(record.get("subsection"));
-						    		waitFor(4).seconds();
+						    		waitFor(5).seconds();
 							 String colour = record.get("colour");	 	
 									 if (colour.equals("M"))
 									 {
@@ -334,6 +334,10 @@ public class DailyMailAccountPage extends PageObject {
 							 		   /*rcs = rcs.replace('/', '\\');
 							 		   System.out.println("the values that is supplied is : ----------------------------->"+rcs);*/
 							 		   
+							 		
+							 		if (rcs.equalsIgnoreCase("England & Walescot")){
+								 			rcs = "England & Wales\\Scot";
+							 		} 
 							 		if (rcs.equalsIgnoreCase("England & Walescot & N Ire")){
 							 			rcs = "England & Wales\\Scot & N Ire";
 							 		}
@@ -397,11 +401,14 @@ public class DailyMailAccountPage extends PageObject {
 					    		 	try {
 								    	 WebElement prepaymentwindow1 = getDriver().switchTo().activeElement();
 								    	 		waitFor(1).second();
-								    	 prepaymentwindow1.findElement(By.xpath("//input[@value='Prepay']")).click();
+//								    	 prepaymentwindow1.findElement(By.xpath("//input[@value='Prepay']")).click();
+								    	 prepaymentwindow1.findElement(By.xpath("//input[@value='Ignore']")).click();
+								    	//input[@value='Ignore']
 								    	 		waitFor(3).seconds();
-								    	 WebElement prepaymentwindow2 = getDriver().switchTo().activeElement();
+								    	 prepaymentwindow1.findElement(By.xpath("//input[@value='Ignore']")).click();
+								    	 /*WebElement prepaymentwindow2 = getDriver().switchTo().activeElement();
 								    	 		waitFor(1).second(); 
-								    	 prepaymentwindow2.findElement(By.xpath("//input[@value='OK']")).click();
+								    	 prepaymentwindow2.findElement(By.xpath("//input[@value='OK']")).click();*/
 					    		 	} catch (Exception e) {}
 					    	 }
 					    	 waitFor(8).seconds();
